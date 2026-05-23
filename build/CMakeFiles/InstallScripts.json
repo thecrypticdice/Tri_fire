@@ -1,0 +1,11 @@
+{
+	"InstallScripts" : 
+	[
+		"/mnt/151023c1-1726-4bc6-a47d-e17130eb28f2/c++ games/fire tringles raylib/build/cmake_install.cmake",
+		"/mnt/151023c1-1726-4bc6-a47d-e17130eb28f2/c++ games/fire tringles raylib/build/3rdParty/raylib/cmake_install.cmake",
+		"/mnt/151023c1-1726-4bc6-a47d-e17130eb28f2/c++ games/fire tringles raylib/build/3rdParty/raylib/raylib/cmake_install.cmake",
+		"/mnt/151023c1-1726-4bc6-a47d-e17130eb28f2/c++ games/fire tringles raylib/build/3rdParty/raylib/raylib/external/glfw/cmake_install.cmake",
+		"/mnt/151023c1-1726-4bc6-a47d-e17130eb28f2/c++ games/fire tringles raylib/build/3rdParty/raylib/raylib/external/glfw/src/cmake_install.cmake"
+	],
+	"Parallel" : false
+}
