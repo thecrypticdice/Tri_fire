@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.10)
 
 project(Tri_Fire)
 
-
+set(CMAKE_CXX_STANDARD 20)
 add_subdirectory(./3rdParty/raylib)
 add_executable(Tri_Fire  ./src/game.cpp)
 target_include_directories(Tri_Fire PUBLIC ./src)

@@ -3,6 +3,7 @@
 #include <string>
 class fire{
     public:
+
         float rad = 0.112;
         bool is_fired = false;
         float speed = 6;
@@ -48,6 +49,7 @@ class fire{
 };
 class fire_ctrl{
     public:
+        int score=0;
         void fire_a_bullet(float c_pos_x, float c_pos_y)
         {
             for (int i = 0;i<sizeof(m_bullets)/sizeof(fire) ;i++ )
@@ -101,5 +103,8 @@ class fire_ctrl{
     private:
         fire m_bullets[32];
 
-        void when_hit(){}
+        void when_hit()
+        {
+            score++;
+        }
 };

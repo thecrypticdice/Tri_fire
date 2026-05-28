@@ -5,9 +5,12 @@
 #include "player.h"
 #include "crosshair.h"
 #include "fire.h"
+#include <string>
+#include <format>
 //------------------------------------------------------------------------------------
 // Program main entry point
 //------------------------------------------------------------------------------------
+
 int main(void)
 {
     bool game_over = false;
@@ -43,7 +46,9 @@ Player.set(screenWidth,screenHeight );
          gun.fire_a_bullet((GetRenderWidth()/2)-x_crosshair.x,(GetRenderHeight()/2)-x_crosshair.y );
          DrawText("fire!", 20, 80, 20, DARKGRAY);
         }
+    if (crowd.is_collides()) {game_over = true;
 
+}
     float delta = GetFrameTime();
         BeginDrawing();
         // Draw model defining: position, size, rotation-axis, rotation (degrees), size, and tint-color
@@ -66,7 +71,8 @@ Player.set(screenWidth,screenHeight );
 
         EndMode3D();
         x_crosshair.draw();
-        DrawText("Welcome to the third dimension!", 10, 40, 20, DARKGRAY);
+        std::string score = std::format("score: {}", gun.score);
+        DrawText(score.c_str(), 10, 40, 20, DARKGRAY);
 
         DrawFPS(10, 10);
 

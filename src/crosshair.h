@@ -23,7 +23,7 @@ public:
     {
         float correct = 100;//dist_v2(x,y , GetRenderWidth()/2, GetRenderHeight()/2);
         //static void DrawText3D(Font font, const char *text, Vector3 position, float fontSize, float fontSpacing, float lineSpacing, bool backface, Color tint);
-        DrawText3D(GetFontDefault(), "×", {(GetRenderWidth()-x)/3,0,(GetRenderHeight()-y)/3}, 20.0f, 1.0f, 0.0f, false, color);
+
         //DrawCube(Vector3Normalize((Vector3){((GetRenderWidth()/2)-x),0,((GetRenderHeight()/2)-y)}), 0.2f, 0.01f, 0.2f, color);
         DrawCube({(x-(GetRenderWidth()/2))/correct,0,(y-(GetRenderHeight()/2))/correct}, 0.2f, 0.01f, 0.2f, color);
     }

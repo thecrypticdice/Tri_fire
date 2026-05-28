@@ -45,7 +45,7 @@ public:
     {
         bool c = false;
         for (int i = 0;i<sizeof(enemies)/sizeof(enemy) ;i++ ) {
-        if (dist_v2(enemies[i].pos_x,enemies[i].pos_y ,0 , 0) <mergen)
+        if ((dist_v2(enemies[i].pos_x,enemies[i].pos_y ,0 , 0) <mergen)and !enemies[i].is_dead)
         {
             c = true;
             enemies[i].is_dead = true;
