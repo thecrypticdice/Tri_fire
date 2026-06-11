@@ -5,8 +5,11 @@ project(Tri_Fire)
 
 set(CMAKE_CXX_STANDARD 20)
 add_subdirectory(./3rdParty/raylib)
+
 add_executable(Tri_Fire  ./src/game.cpp)
 target_include_directories(Tri_Fire PUBLIC ./src)
-target_link_libraries(Tri_Fire  raylib)
+target_include_directories(Tri_Fire PUBLIC ./3rdParty/tracy/public/)
+target_link_libraries(Tri_Fire PUBLIC raylib)
+
 
 

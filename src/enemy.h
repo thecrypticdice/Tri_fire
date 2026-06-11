@@ -28,6 +28,8 @@ public:
     enemy enemies[16];
     void update(float delta)
     {
+
+
         s_timer -= delta;
         if (s_timer<0)
         {

@@ -14,6 +14,8 @@ public:
     }
     void draw(float x, float y)
     {
+
+
         pos_x = x;
         pos_y = y;
         w = GetRenderWidth();

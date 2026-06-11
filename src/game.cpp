@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include "raylib.h"
 #include <math.h>
@@ -7,12 +6,17 @@
 #include "fire.h"
 #include <string>
 #include <format>
+
+
+
 //------------------------------------------------------------------------------------
 // Program main entry point
 //------------------------------------------------------------------------------------
 
 int main(void)
 {
+
+    bool start_game = false;
     bool game_over = false;
     // Initialization
     //--------------------------------------------------------------------------------------
@@ -41,9 +45,10 @@ player Player;
 Player.set(screenWidth,screenHeight );
     while (!WindowShouldClose() & ! game_over)    // Detect window close button or ESC key
     {
-        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+        if(start_game)
+        {if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
         {
-         gun.fire_a_bullet((GetRenderWidth()/2)-x_crosshair.x,(GetRenderHeight()/2)-x_crosshair.y );
+         gun.fire_a_bullet(-x_crosshair.world_x,-x_crosshair.world_y);
          DrawText("fire!", 20, 80, 20, DARKGRAY);
         }
     if (crowd.is_collides()) {game_over = true;
@@ -58,7 +63,7 @@ Player.set(screenWidth,screenHeight );
         //if (crowd.is_collides(1.1)){game_over = true;}
         ClearBackground({243, 247, 205});
 
-        x_crosshair.update(delta,GetMousePosition().x , GetMousePosition().y);
+        x_crosshair.update(delta,GetMousePosition().x , GetMousePosition().y,camera);
 
         BeginMode3D(camera);
         //x_crosshair.draw_3d();
@@ -75,8 +80,19 @@ Player.set(screenWidth,screenHeight );
         DrawText(score.c_str(), 10, 40, 20, DARKGRAY);
 
         DrawFPS(10, 10);
+        }
+        else
+        {
+            ClearBackground({243, 247, 205});
+            DrawText("press enter to start the game", GetRenderWidth()/2, GetRenderHeight()/2, 30, BLACK);
+            if (IsKeyPressed(KEY_ENTER))
+            {
+                start_game = true;
+            }
+        }
 
         EndDrawing();
+
     }
     CloseWindow();
 

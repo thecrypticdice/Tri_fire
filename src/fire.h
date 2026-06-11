@@ -64,6 +64,8 @@ class fire_ctrl{
         }
         void update(float delta, enemy *crowd,int crowdSize)
         {
+
+
             for (int i = 0;i<sizeof(m_bullets)/sizeof(fire);i++)
             {
                 if (m_bullets[i].is_fired)
