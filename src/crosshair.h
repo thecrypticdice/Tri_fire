@@ -28,7 +28,7 @@ public:
     }
     void set_up_texture(const char* path)
     {
-        //HideCursor();
+        HideCursor();
        crosshair_trxture = LoadTexture( path);
     }
     void draw_3d()
