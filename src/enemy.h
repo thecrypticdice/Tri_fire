@@ -43,7 +43,7 @@ public:
         }
 
     }
-    bool is_collides(float mergen = 0.1)
+    bool is_collides(float mergen = 0.7)
     {
         bool c = false;
         for (int i = 0;i<sizeof(enemies)/sizeof(enemy) ;i++ ) {
