@@ -2,7 +2,8 @@
 #include "utility.h"
 #include <raymath.h>
 
-
+#undef FLT_MAX
+#define FLT_MAX     340282346638528859811704183484516925440.0f
 
 class crosshair{
 public:
@@ -17,7 +18,7 @@ public:
     {
         x +=  (m_x - x)*delta*speed;
         y +=  (m_y - y)*delta*speed;
-        ray = GetScreenToWorldRay((Vector2){x, y}, camera);
+        ray = GetScreenToWorldRayEx((Vector2){x, y}, camera, GetRenderWidth(), GetRenderHeight());
         RayCollision groundHitInfo = GetRayCollisionQuad(ray, g0, g1, g2, g3);
         if (groundHitInfo.hit)
         {
@@ -27,7 +28,7 @@ public:
     }
     void set_up_texture(const char* path)
     {
-        HideCursor();
+        //HideCursor();
        crosshair_trxture = LoadTexture( path);
     }
     void draw_3d()
@@ -48,8 +49,8 @@ private:
     Texture2D crosshair_trxture;
     Ray ray = { 0 };
     // Ground quad
-    Vector3 g0 = (Vector3){ -500.0f, 0.0f, -500.0f };
-    Vector3 g1 = (Vector3){ -500.0f, 0.0f,  500.0f };
-    Vector3 g2 = (Vector3){  500.0f, 0.0f,  500.0f };
-    Vector3 g3 = (Vector3){  500.0f, 0.0f, -500.0f };
+    Vector3 g0 = (Vector3){ -500.0f, 0.50f, -500.0f };
+    Vector3 g1 = (Vector3){ -500.0f, 0.50f,  500.0f };
+    Vector3 g2 = (Vector3){  500.0f, 0.50f,  500.0f };
+    Vector3 g3 = (Vector3){  500.0f, 0.50f, -500.0f };
 };

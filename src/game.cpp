@@ -16,6 +16,7 @@
 int main(void)
 {
 
+
     bool start_game = false;
     bool game_over = false;
     // Initialization
