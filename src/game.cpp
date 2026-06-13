@@ -9,16 +9,20 @@
 
 
 
-//------------------------------------------------------------------------------------
-// Program main entry point
-//------------------------------------------------------------------------------------
-
+enum game_state
+{
+    start,
+    playing,
+    paused,
+    game_over
+};
+game_state state = start;
 int main(void)
 {
 
 
     bool start_game = false;
-    bool game_over = false;
+    bool exit = false;
     // Initialization
     //--------------------------------------------------------------------------------------
     const int screenWidth = 1920;
@@ -37,59 +41,103 @@ int main(void)
     camera.up = (Vector3){ 0.0f, 1.0f, 0.0f };          // Camera up vector (rotation towards target)
     camera.fovy = 45.0f;                                // Camera field-of-view Y
     camera.projection = CAMERA_PERSPECTIVE;             // Camera mode type
-    SetTargetFPS(75);
+    SetTargetFPS(120);
 fire_ctrl gun;
 enemy_ctrl crowd;
 crosshair x_crosshair;
 x_crosshair.set_up_texture("./assets/xcrosshair.png");
 player Player;
 Player.set(screenWidth,screenHeight );
-    while (!WindowShouldClose() & ! game_over)    // Detect window close button or ESC key
+    while (!WindowShouldClose() & ! exit)    // Detect window close button or ESC key
     {
-        if(start_game)
-        {if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+        float delta = GetFrameTime();
+    switch(state)
         {
-         gun.fire_a_bullet(-x_crosshair.world_x,-x_crosshair.world_y);
-         DrawText("fire!", 20, 80, 20, DARKGRAY);
+        case playing:
+        {
+            if (IsKeyPressed(KEY_ESCAPE))
+            {
+                state = paused;
+            }
+            if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+            {
+            gun.fire_a_bullet(-x_crosshair.world_x,-x_crosshair.world_y);
+            DrawText("fire!", 20, 80, 20, DARKGRAY);
+            }
+            if (crowd.is_collides()) 
+            {
+            state = game_over;
+            }
+            
+            BeginDrawing();
+            // Draw model defining: position, size, rotation-axis, rotation (degrees), size, and tint-color
+
+            gun.update(delta, crowd.enemies,sizeof(crowd.enemies)/sizeof(enemy));
+            crowd.update(delta);
+            
+            ClearBackground({243, 247, 205});
+
+            x_crosshair.update(delta,GetMousePosition().x , GetMousePosition().y,camera);
+
+            BeginMode3D(camera);
+            //x_crosshair.draw_3d();
+            Player.draw(x_crosshair.x,x_crosshair.y);
+            gun.draw();
+            crowd.draw();
+
+
+            DrawGrid(100, 1.0f);
+
+            EndMode3D();
+            x_crosshair.draw();
+            DrawText(std::format("score: {}", gun.score).c_str(), 10, 40, 20, DARKGRAY);
+
+            DrawFPS(10, 10);
+            break;
         }
-    if (crowd.is_collides()) {game_over = true;
-
-}
-    float delta = GetFrameTime();
-        BeginDrawing();
-        // Draw model defining: position, size, rotation-axis, rotation (degrees), size, and tint-color
-
-        gun.update(delta, crowd.enemies,sizeof(crowd.enemies)/sizeof(enemy));
-        crowd.update(delta);
-        //if (crowd.is_collides(1.1)){game_over = true;}
-        ClearBackground({243, 247, 205});
-
-        x_crosshair.update(delta,GetMousePosition().x , GetMousePosition().y,camera);
-
-        BeginMode3D(camera);
-        //x_crosshair.draw_3d();
-        Player.draw(x_crosshair.x,x_crosshair.y);
-        gun.draw();
-        crowd.draw();
-
-
-        DrawGrid(100, 1.0f);
-
-        EndMode3D();
-        x_crosshair.draw();
-        std::string score = std::format("score: {}", gun.score);
-        DrawText(score.c_str(), 10, 40, 20, DARKGRAY);
-
-        DrawFPS(10, 10);
-        }
-        else
+        case start:
         {
             ClearBackground({243, 247, 205});
             DrawText("press enter to start the game", GetRenderWidth()/2, GetRenderHeight()/2, 30, BLACK);
             if (IsKeyPressed(KEY_ENTER))
             {
-                start_game = true;
+                state = playing;
             }
+
+            break;
+        }
+        case game_over:
+        {
+            ClearBackground({243, 247, 205});
+            DrawText(std::format("final score: {}", gun.score).c_str(), GetRenderWidth()/2, GetRenderHeight()/2, 30, BLACK);
+            DrawText("press enter to restart the game", GetRenderWidth()/2, GetRenderHeight()/2 + 40, 30, BLACK);
+            if (IsKeyPressed(KEY_ENTER))
+            {
+                state = playing;
+                gun.score = 0;
+                for (auto i : crowd.enemies) 
+                {
+                    i.is_dead = true;
+                }
+            }
+            if (IsKeyPressed(KEY_ESCAPE))
+            {
+                exit = true;
+            }
+            break;
+        }
+        case paused:
+        {
+            ClearBackground({243, 247, 205});
+            DrawText("game paused", GetRenderWidth()/2, GetRenderHeight()/2, 30, BLACK);
+            DrawText("press enter to resume the game", GetRenderWidth()/2, GetRenderHeight()/2 + 40, 30, BLACK);
+            if (IsKeyPressed(KEY_ENTER) or IsKeyPressed(KEY_ESCAPE))
+            {
+                state = playing;
+            }
+            break;
+        }
+            
         }
 
         EndDrawing();
