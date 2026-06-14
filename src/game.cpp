@@ -4,6 +4,7 @@
 #include "player.h"
 #include "crosshair.h"
 #include "fire.h"
+#include "timer.h"
 #include <string>
 #include <format>
 
@@ -20,7 +21,8 @@ game_state state = start;
 int main(void)
 {
 
-
+    timer cool_down;
+    cool_down.set_wait_time(0.167f);
     bool start_game = false;
     bool exit = false;
     // Initialization
@@ -55,14 +57,15 @@ Player.set(screenWidth,screenHeight );
         {
         case playing:
         {
+            cool_down.update(delta);
             if (IsKeyPressed(KEY_ESCAPE))
             {
                 state = paused;
             }
-            if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+            if ((IsMouseButtonDown(MOUSE_BUTTON_LEFT) or IsKeyDown(KEY_SPACE)) and !cool_down.is_over_time())
             {
-            gun.fire_a_bullet(-x_crosshair.world_x,-x_crosshair.world_y);
-            DrawText("fire!", 20, 80, 20, DARKGRAY);
+                cool_down.reset_time();
+                gun.fire_a_bullet(-x_crosshair.world_x,-x_crosshair.world_y);
             }
             if (crowd.is_collides()) 
             {
@@ -131,6 +134,7 @@ Player.set(screenWidth,screenHeight );
             ClearBackground({243, 247, 205});
             DrawText("game paused", GetRenderWidth()/2, GetRenderHeight()/2, 30, BLACK);
             DrawText("press enter to resume the game", GetRenderWidth()/2, GetRenderHeight()/2 + 40, 30, BLACK);
+            DrawText("press F8 to exit game ", GetRenderWidth()/2, GetRenderHeight()/2 + 70, 30, BLACK);
             if (IsKeyPressed(KEY_ENTER) or IsKeyPressed(KEY_ESCAPE))
             {
                 state = playing;
