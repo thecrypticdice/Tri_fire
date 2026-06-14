@@ -115,9 +115,9 @@ Player.set(screenWidth,screenHeight );
             {
                 state = playing;
                 gun.score = 0;
-                for (auto i : crowd.enemies) 
+                for (int i =0; i < sizeof(crowd.enemies)/sizeof(enemy);i++) 
                 {
-                    i.is_dead = true;
+                    crowd.enemies[i].is_dead = true;
                 }
             }
             if (IsKeyPressed(KEY_ESCAPE))
